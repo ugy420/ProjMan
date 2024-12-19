@@ -27,21 +27,34 @@ function App() {
     });
   }
 
-  function submitForm(){
-    
+  function handleSubmitForm(formData){
+    setForm(prevState => {
+      const newProject = {
+        ...formData,
+        id: Math.random()
+      };
+
+      return{
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: [...prevState.projects, newProject]
+      };
+    });
   }
 
   let content;
 
+  console.log(form.projects);
+
   if(form.selectedProjectId === null){
-    content = <Form onCancelForm={handleCancelForm}/>
+    content = <Form onCancelForm={handleCancelForm} onAdd={handleSubmitForm} />
   }else if(form.selectedProjectId === undefined){
     content = <Fallback onFillForm={handleFillForm}/>
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <Sidebar onFillForm={handleFillForm} />
+      <Sidebar onFillForm={handleFillForm} data={form.projects} />
       {content}
     </main>
   );
